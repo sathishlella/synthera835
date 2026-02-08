@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynthERA-835 | Synthetic Claims Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                <span class="logo-text">SynthERA-835</span>
+            </div>
+
+            <nav class="nav">
+                <a href="#" class="nav-item active" onclick="navigateTo('dashboard', this, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('generate', this, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                    <span>Generate Claims</span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('analytics', this, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('export', this, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span>Export Data</span>
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('settings', this, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    </svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="version-badge">v0.1.0</div>
+                <p>Velden Health Research</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg>
+                    </button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-secondary" onclick="reloadDashboardData()" title="Reload latest claims data">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10" />
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                        </svg>
+                        Refresh
+                    </button>
+                    <button class="btn btn-primary" onclick="generateClaims()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Generate Claims
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="totalClaims">10,000</span>
+                        <span class="stat-label">Total Claims</span>
+                    </div>
+                    <div class="stat-trend positive">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        </svg>
+                        +12%
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="15" y1="9" x2="9" y2="15" />
+                            <line x1="9" y1="9" x2="15" y2="15" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="deniedClaims">2,215</span>
+                        <span class="stat-label">Denied Claims</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span id="denialRate">22%</span> denial rate
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="paidClaims">7,785</span>
+                        <span class="stat-label">Paid Claims</span>
+                    </div>
+                    <div class="stat-trend positive">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        </svg>
+                        93%
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="recoverableClaims">1,329</span>
+                        <span class="stat-label">Recoverable</span>
+                    </div>
+                    <div class="stat-badge recovery">
+                        Can be resubmitted
+                    </div>
+                </div>
+            </section>
+
+            <!-- ML Results Section -->
+            <section class="stats-grid" style="margin-top: 1rem;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                            <path d="M22 12A10 10 0 0 0 12 2v10z" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">0.622</span>
+                        <span class="stat-label">AUC-ROC (RF)</span>
+                    </div>
+                    <div class="stat-trend positive">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        </svg>
+                        +15%
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                            <path d="M22 12A10 10 0 0 0 12 2v10z" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">0.607</span>
+                        <span class="stat-label">AUC-ROC (XGB)</span>
+                    </div>
+                    <div class="stat-trend positive">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        </svg>
+                        +10%
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">46.1%</span>
+                        <span class="stat-label">Recall (RF)</span>
+                    </div>
+                    <div class="stat-badge recovery">
+                        Denial detection
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="2" x2="12" y2="22" />
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">20</span>
+                        <span class="stat-label">Features Used</span>
+                    </div>
+                    <div class="stat-badge">
+                        Leakage-free
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-grid">
+                <!-- CARC Distribution -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>CARC Code Distribution</h3>
+                        <div class="chart-actions">
+                            <button class="btn-icon" title="Refresh">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10" />
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div class="bar-chart" id="carcChart">
+                            <div class="bar-item">
+                                <span class="bar-label">CO-16</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 25%"></div>
+                                </div>
+                                <span class="bar-value">25%</span>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">CO-29</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 18%"></div>
+                                </div>
+                                <span class="bar-value">18%</span>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">CO-197</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 15%"></div>
+                                </div>
+                                <span class="bar-value">15%</span>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">CO-45</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 12%"></div>
+                                </div>
+                                <span class="bar-value">12%</span>
+                            </div>
+                            <div class="bar-item">
+                                <span class="bar-label">CO-50</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 10%"></div>
+                                </div>
+                                <span class="bar-value">10%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Denial Categories -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Denial Categories</h3>
+                    </div>
+                    <div class="chart-body">
+                        <div class="donut-chart-container">
+                            <div class="donut-chart">
+                                <svg viewBox="0 0 200 200">
+                                    <circle class="donut-segment coding" cx="100" cy="100" r="80"
+                                        stroke-dasharray="125.6 377" stroke-dashoffset="0" />
+                                    <circle class="donut-segment auth" cx="100" cy="100" r="80"
+                                        stroke-dasharray="100.5 377" stroke-dashoffset="-125.6" />
+                                    <circle class="donut-segment eligibility" cx="100" cy="100" r="80"
+                                        stroke-dasharray="75.4 377" stroke-dashoffset="-226.1" />
+                                    <circle class="donut-segment timely" cx="100" cy="100" r="80"
+                                        stroke-dasharray="50.2 377" stroke-dashoffset="-301.5" />
+                                    <circle class="donut-segment other" cx="100" cy="100" r="80"
+                                        stroke-dasharray="25.1 377" stroke-dashoffset="-351.7" />
+                                </svg>
+                                <div class="donut-center">
+                                    <span class="donut-value">2,215</span>
+                                    <span class="donut-label">Denials</span>
+                                </div>
+                            </div>
+                            <div class="donut-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color coding"></span>
+                                    <span>Coding (25%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color auth"></span>
+                                    <span>Authorization (20%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color eligibility"></span>
+                                    <span>Eligibility (15%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color timely"></span>
+                                    <span>Timely Filing (10%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color other"></span>
+                                    <span>Other (30%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Claims Table -->
+            <section class="table-section">
+                <div class="table-header">
+                    <h3>Recent Generated Claims</h3>
+                    <div class="table-controls">
+                        <div class="search-box">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                            <input type="text" placeholder="Search claims..." id="searchInput">
+                        </div>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="paid">Paid</option>
+                            <option value="denied">Denied</option>
+                            <option value="partial">Partial</option>
+                        </select>
+                        <button class="btn-secondary" onclick="downloadCSV()" title="Download as CSV">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            CSV
+                        </button>
+                        <button class="btn-secondary" onclick="downloadJSON()" title="Download as JSON">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            JSON
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="claims-table">
+                        <thead>
+                            <tr>
+                                <th>Claim ID</th>
+                                <th>Date</th>
+                                <th>CPT Code</th>
+                                <th>Charge</th>
+                                <th>Paid</th>
+                                <th>Status</th>
+                                <th>CARC</th>
+                                <th>Recovery</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claimsTableBody">
+                            <tr>
+                                <td><code>CLME0IFD0TVBD</code></td>
+                                <td>2025-08-15</td>
+                                <td>90834</td>
+                                <td>$120.00</td>
+                                <td>$96.00</td>
+                                <td><span class="status-badge paid">Paid</span></td>
+                                <td>CO-45</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><code>CLMT84AZYTJXE</code></td>
+                                <td>2025-09-22</td>
+                                <td>90837</td>
+                                <td>$160.00</td>
+                                <td>$0.00</td>
+                                <td><span class="status-badge denied">Denied</span></td>
+                                <td>CO-27</td>
+                                <td><span class="recovery-badge no">Not Recoverable</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>CLMUU4YTN02YC</code></td>
+                                <td>2025-10-05</td>
+                                <td>90791</td>
+                                <td>$200.00</td>
+                                <td>$0.00</td>
+                                <td><span class="status-badge denied">Denied</span></td>
+                                <td>CO-16</td>
+                                <td><span class="recovery-badge yes">Resubmit</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>CLM6HID25OWF7</code></td>
+                                <td>2025-11-12</td>
+                                <td>99214</td>
+                                <td>$130.00</td>
+                                <td>$104.00</td>
+                                <td><span class="status-badge paid">Paid</span></td>
+                                <td>CO-45</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><code>CLMD03UVULEMX</code></td>
+                                <td>2025-12-01</td>
+                                <td>90832</td>
+                                <td>$85.00</td>
+                                <td>$0.00</td>
+                                <td><span class="status-badge denied">Denied</span></td>
+                                <td>CO-29</td>
+                                <td><span class="recovery-badge no">Write Off</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span>Showing 5 of 10,000 claims</span>
+                    <div class="pagination">
+                        <button class="btn-page" disabled>&lt;</button>
+                        <button class="btn-page active">1</button>
+                        <button class="btn-page">2</button>
+                        <button class="btn-page">3</button>
+                        <button class="btn-page">...</button>
+                        <button class="btn-page">20</button>
+                        <button class="btn-page">&gt;</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Generator Config Modal -->
+            <div class="modal" id="generatorModal">
+                <div class="modal-overlay" onclick="closeModal()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Generate Synthetic Claims</h2>
+                        <button class="btn-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Number of Claims</label>
+                            <input type="number" value="1000" min="10" max="100000" id="numClaims">
+                        </div>
+                        <div class="form-group">
+                            <label>Denial Rate (%)</label>
+                            <input type="range" min="0" max="50" value="11" id="denialRateSlider"
+                                oninput="document.getElementById('denialRateValue').textContent = this.value + '%'">
+                            <span id="denialRateValue">11%</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Output Format</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox">
+                                    <input type="checkbox" checked> JSON
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" checked> CSV
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" checked> X12 835 EDI
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Random Seed (for reproducibility)</label>
+                            <input type="number" value="42" id="randomSeed">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button class="btn btn-primary" onclick="startGeneration()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                            Start Generation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
