@@ -109,9 +109,10 @@ def run_generator(num_claims, denial_rate, seed):
         cmd = [
             sys.executable, '-c', f'''
 import sys
-sys.path.insert(0, r"{PROJECT_ROOT}")
+# Add the directory containing generator.py to python path
+sys.path.insert(0, r"{SYNTHERA_DIR}")
 
-from synthera835 import ERA835Generator
+from generator import ERA835Generator
 
 generator = ERA835Generator(
     carc_csv_path=None,
@@ -120,6 +121,8 @@ generator = ERA835Generator(
     seed={seed_str}
 )
 
+# Use raw string for path to avoid escape issues on Windows
+# Only pass output_dir if needed
 claims = generator.generate_dataset(
     num_claims={num_claims},
     output_dir=r"{OUTPUT_DIR}",
