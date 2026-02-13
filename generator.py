@@ -13,10 +13,10 @@ from typing import List, Optional, Dict, Any
 from pathlib import Path
 import json
 
-try:
+if __package__:
     from .carc_parser import CARCParser
     from .rarc_parser import RARCParser
-except ImportError:
+else:
     from carc_parser import CARCParser
     from rarc_parser import RARCParser
 
